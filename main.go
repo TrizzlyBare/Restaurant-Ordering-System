@@ -2,23 +2,24 @@ package main
 
 import (
 	"log"
-	"database"
-	"routes"
 
+	"github.com/TrizzlyBare/Restaurant-Ordering-System/database"
+	"github.com/TrizzlyBare/Restaurant-Ordering-System/models"
+	"github.com/TrizzlyBare/Restaurant-Ordering-System/routes"
 	"github.com/gin-gonic/gin"
 )
 
 func main() {
-	// Connect to database
-	db := database.Connect()
-	defer db.Close()
+	database.ConnectDB()
 
-	// Create a new gin router
-	router := gin.Default()
+	database.DB.AutoMigrate(&models.User{}, &models.Menu{}, &models.Order{}, &models.Payment{})
 
-	// Set up routes
-	routes.Setup(router, db)
+	r := gin.Default()
 
-	// Start the server
-	log.Fatal(router.Run(":8080"))
-}	
+	routes.AuthRoutes(r)
+	routes.MenuRoutes(r)
+	routes.OrderRoutes(r)
+
+	log.Println("Server running on http://localhost:8080")
+	r.Run(":8080")
+}
