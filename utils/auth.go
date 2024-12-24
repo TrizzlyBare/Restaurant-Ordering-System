@@ -11,7 +11,7 @@ import (
 	"github.com/sirupsen/logrus"
 )
 
-// AuthMiddleware is a middleware to check if the request has a valid JWT token
+// AuthMiddleware a middleware to check if the request has a valid JWT token
 func AuthMiddleware(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		err := godotenv.Load()
